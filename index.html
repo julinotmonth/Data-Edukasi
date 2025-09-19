@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Edukasi - SP-PAROK</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2c3e50, #3498db);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .header i {
+            font-size: 2.5rem;
+            color: #e74c3c;
+        }
+
+        .content {
+            padding: 2rem;
+        }
+
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .stat-card h3 {
+            margin: 0 0 0.5rem 0;
+            font-size: 1.8rem;
+        }
+
+        .stat-card p {
+            margin: 0;
+            opacity: 0.9;
+        }
+
+        .table-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .search-box {
+            flex: 1;
+            max-width: 300px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #c0392b;
+            transform: translateY(-2px);
+        }
+
+        .btn-success {
+            background: #27ae60;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #229954;
+        }
+
+        .btn-warning {
+            background: #f39c12;
+            color: white;
+        }
+
+        .btn-warning:hover {
+            background: #e67e22;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+        }
+
+        .btn-info {
+            background: #17a2b8;
+            color: white;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        .data-table th {
+            background: linear-gradient(135deg, #2c3e50, #3498db);
+            color: white;
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .data-table td {
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
+            vertical-align: middle;
+        }
+
+        .data-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .category-badge {
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: white;
+        }
+
+        .category-article {
+            background: #3498db;
+        }
+
+        .category-video {
+            background: #e74c3c;
+        }
+
+        .category-infographic {
+            background: #27ae60;
+        }
+
+        .category-tips {
+            background: #f39c12;
+        }
+
+        .status-badge {
+            padding: 0.3rem 0.6rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .status-published {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-draft {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-archived {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .action-buttons .btn {
+            padding: 0.5rem;
+            font-size: 0.8rem;
+        }
+
+        .priority-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 0.5rem;
+        }
+
+        .priority-high { background: #dc3545; }
+        .priority-medium { background: #ffc107; }
+        .priority-low { background: #28a745; }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 2rem;
+        }
+
+        .pagination button {
+            padding: 0.5rem 1rem;
+            border: 1px solid #ddd;
+            background: white;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .pagination button.active {
+            background: #3498db;
+            color: white;
+            border-color: #3498db;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+        }
+
+        .modal-content {
+            position: relative;
+            background: white;
+            margin: 5% auto;
+            padding: 2rem;
+            width: 90%;
+            max-width: 600px;
+            border-radius: 12px;
+        }
+
+        .close-modal {
+            position: absolute;
+            right: 1rem;
+            top: 1rem;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #999;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .form-group textarea {
+            height: 100px;
+            resize: vertical;
+        }
+
+        @media (max-width: 768px) {
+            .table-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-box {
+                max-width: none;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .data-table {
+                font-size: 0.9rem;
+            }
+
+            .data-table th,
+            .data-table td {
+                padding: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>
+                <i class="fas fa-graduation-cap"></i>
+                Data Edukasi SP-PAROK
+            </h1>
+            <p>Manajemen Konten Edukasi Kesehatan Anti-Rokok</p>
+        </div>
+
+        <div class="content">
+            <!-- Statistics Bar -->
+            <div class="stats-bar">
+                <div class="stat-card">
+                    <h3>127</h3>
+                    <p>Total Konten</p>
+                </div>
+                <div class="stat-card">
+                    <h3>89</h3>
+                    <p>Artikel Aktif</p>
+                </div>
+                <div class="stat-card">
+                    <h3>24</h3>
+                    <p>Video Edukasi</p>
+                </div>
+                <div class="stat-card">
+                    <h3>14</h3>
+                    <p>Infografis</p>
+                </div>
+            </div>
+
+            <!-- Table Controls -->
+            <div class="table-controls">
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="Cari berdasarkan judul atau kategori..." onkeyup="searchTable()">
+                </div>
+                <div>
+                    <button class="btn btn-primary" onclick="openModal('add')">
+                        <i class="fas fa-plus"></i> Tambah Konten
+                    </button>
+                    <button class="btn btn-success" onclick="exportData()">
+                        <i class="fas fa-download"></i> Export
+                    </button>
+                </div>
+            </div>
+
+            <!-- Data Table -->
+            <table class="data-table" id="educationTable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Judul</th>
+                        <th>Kategori</th>
+                        <th>Prioritas</th>
+                        <th>Status</th>
+                        <th>Views</th>
+                        <th>Tanggal</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>001</td>
+                        <td>Bahaya Rokok bagi Kesehatan Paru-paru</td>
+                        <td><span class="category-badge category-article">Artikel</span></td>
+                        <td><span class="priority-indicator priority-high"></span>Tinggi</td>
+                        <td><span class="status-badge status-published">Published</span></td>
+                        <td>2,456</td>
+                        <td>15 Des 2024</td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="btn btn-info" onclick="viewContent(1)"><i class="fas fa-eye"></i></button>
+                                <button class="btn btn-warning" onclick="editContent(1)"><i class="fas fa-edit"></i></button>
+                                <button class="btn btn-danger" onclick="deleteContent(1)"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>002</td>
+                        <td>Tips Efektif Berhenti Merokok dalam 30 Hari</td>
+                        <td><span class="category-badge category-tips">Tips</span></td>
+                        <td><span class="priority-indicator priority-high"></span>Tinggi</td>
+                        <td><span class="status-badge status-published">Published</span></td>
+                        <td>3,124</td>
+                        <td>14 Des 2024</td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="btn btn-info" onclick="viewContent(2)"><i class="fas fa-eye"></i></button>
+                                <button class="btn btn-warning" onclick="editContent(2)"><i class="fas fa-edit"></i></button>
+                                <button class="btn btn-danger" onclick="deleteContent(2)"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>003</td>
+                        <td>PPOK: Penyakit Paru Obstruktif Kronis</td>
+                        <td><span class="category-badge category-article">Artikel</span></td>
+                        <td><span class="priority-indicator priority-medium"></span>Sedang</td>
+                        <td><span class="status-badge status-published">Published</span></td>
+                        <td>1,892</td>
+                        <td>13 Des 2024</td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="btn btn-info" onclick="viewContent(3)"><i class="fas fa-eye"></i></button>
+                                <button class="btn btn-warning" onclick="editContent(3)"><i class="fas fa-edit"></i></button>
+                                <button class="btn btn-danger" onclick="deleteContent(3)"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>004</td>
+                        <td>Video: Dampak Rokok pada Sistem Kardiovaskular</td>
+                        <td><span class="category-badge category-video">Video</span></td>
+                        <td><span class="priority-indicator priority-high"></span>Tinggi</td>
+                        <td><span class="status-badge status-published">Published</span></td>
+                        <td>5,678</td>
+                        <td>12 Des 2024</td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="btn btn-info" onclick="viewContent(4)"><i class="fas fa-eye"></i></button>
+                                <button class="btn btn-warning" onclick="editContent(4)"><i class="fas fa-edit"></i></button>
+                                <button class="btn btn-danger" onclick="deleteContent(4)"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>005</td>
+                        <td>Infografis: Statistik Perokok di Indonesia</td>
+                        <td><span class="category-badge category-infographic">Infografis</span></td>
+                        <td><span class="priority-indicator priority-medium"></span>Sedang</td>
+                        <td><span class="status-badge status-draft">Draft</span></td>
+                        <td>0</td>
+                        <td>11 Des 2024</td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="btn btn-info" onclick="viewContent(5)"><i class="fas fa-eye"></i></button>
+                                <button class="btn btn-warning" onclick="editContent(5)"><i class="fas fa-edit"></i></button>
+                                <button class="btn btn-danger" onclick="deleteContent(5)"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>006</td>
+                        <td>Kanker Paru: Deteksi Dini dan Pencegahan</td>
+                        <td><span class="category-badge category-article">Artikel</span></td>
+                        <td><span class="priority-indicator priority-high"></span>Tinggi</td>
+                        <td><span class="status-badge status-published">Published</span></td>
+                        <td>2,134</td>
+                        <td>10 Des 2024</td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="btn btn-info" onclick="viewContent(6)"><i class="fas fa-eye"></i></button>
+                                <button class="btn btn-warning" onclick="editContent(6)"><i class="fas fa-edit"></i></button>
+                                <button class="btn btn-danger" onclick="deleteContent(6)"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>007</td>
+                        <td>Terapi Pengganti Nikotin: Panduan Lengkap</td>
+                        <td><span class="category-badge category-tips">Tips</span></td>
+                        <td><span class="priority-indicator priority-medium"></span>Sedang</td>
+                        <td><span class="status-badge status-published">Published</span></td>
+                        <td>1,456</td>
+                        <td>09 Des 2024</td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="btn btn-info" onclick="viewContent(7)"><i class="fas fa-eye"></i></button>
+                                <button class="btn btn-warning" onclick="editContent(7)"><i class="fas fa-edit"></i></button>
+                                <button class="btn btn-danger" onclick="deleteContent(7)"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>008</td>
+                        <td>Video: Testimoni Mantan Perokok Berat</td>
+                        <td><span class="category-badge category-video">Video</span></td>
+                        <td><span class="priority-indicator priority-low"></span>Rendah</td>
+                        <td><span class="status-badge status-published">Published</span></td>
+                        <td>987</td>
+                        <td>08 Des 2024</td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="btn btn-info" onclick="viewContent(8)"><i class="fas fa-eye"></i></button>
+                                <button class="btn btn-warning" onclick="editContent(8)"><i class="fas fa-edit"></i></button>
+                                <button class="btn btn-danger" onclick="deleteContent(8)"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>009</td>
+                        <td>Penyakit Jantung Akibat Rokok</td>
+                        <td><span class="category-badge category-article">Artikel</span></td>
+                        <td><span class="priority-indicator priority-high"></span>Tinggi</td>
+                        <td><span class="status-badge status-archived">Archived</span></td>
+                        <td>3,456</td>
+                        <td>07 Des 2024</td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="btn btn-info" onclick="viewContent(9)"><i class="fas fa-eye"></i></button>
+                                <button class="btn btn-warning" onclick="editContent(9)"><i class="fas fa-edit"></i></button>
+                                <button class="btn btn-danger" onclick="deleteContent(9)"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>010</td>
+                        <td>Infografis: Manfaat Berhenti Merokok</td>
+                        <td><span class="category-badge category-infographic">Infografis</span></td>
+                        <td><span class="priority-indicator priority-medium"></span>Sedang</td>
+                        <td><span class="status-badge status-published">Published</span></td>
+                        <td>2,789</td>
+                        <td>06 Des 2024</td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="btn btn-info" onclick="viewContent(10)"><i class="fas fa-eye"></i></button>
+                                <button class="btn btn-warning" onclick="editContent(10)"><i class="fas fa-edit"></i></button>
+                                <button class="btn btn-danger" onclick="deleteContent(10)"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- Pagination -->
+            <div class="pagination">
+                <button onclick="changePage(-1)">← Previous</button>
+                <button class="active" onclick="goToPage(1)">1</button>
+                <button onclick="goToPage(2)">2</button>
+                <button onclick="goToPage(3)">3</button>
+                <button onclick="changePage(1)">Next →</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Add/Edit Content -->
+    <div class="modal" id="contentModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <h3 id="modalTitle">Tambah Konten Edukasi</h3>
+            <form id="contentForm" onsubmit="saveContent(event)">
+                <div class="form-group">
+                    <label for="contentTitle">Judul Konten</label>
+                    <input type="text" id="contentTitle" required>
+                </div>
+                <div class="form-group">
+                    <label for="contentCategory">Kategori</label>
+                    <select id="contentCategory" required>
+                        <option value="">Pilih Kategori</option>
+                        <option value="artikel">Artikel</option>
+                        <option value="video">Video</option>
+                        <option value="infographic">Infografis</option>
+                        <option value="tips">Tips</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="contentPriority">Prioritas</label>
+                    <select id="contentPriority" required>
+                        <option value="">Pilih Prioritas</option>
+                        <option value="high">Tinggi</option>
+                        <option value="medium">Sedang</option>
+                        <option value="low">Rendah</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="contentStatus">Status</label>
+                    <select id="contentStatus" required>
+                        <option value="">Pilih Status</option>
+                        <option value="published">Published</option>
+                        <option value="draft">Draft</option>
+                        <option value="archived">Archived</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="contentDescription">Deskripsi</label>
+                    <textarea id="contentDescription" placeholder="Masukkan deskripsi konten..."></textarea>
+                </div>
+                <div style="text-align: right; margin-top: 2rem;">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()" style="margin-right: 1rem; background: #6c757d;">Batal</button>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let currentPage = 1;
+        let totalPages = 3;
+
+        function searchTable() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const table = document.getElementById('educationTable');
+            const rows = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+
+            for (let i = 0; i < rows.length; i++) {
+                const row = rows[i];
+                const title = row.cells[1].textContent.toLowerCase();
+                const category = row.cells[2].textContent.toLowerCase();
+                
+                if (title.includes(searchTerm) || category.includes(searchTerm)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            }
+        }
+
+        function openModal(action, id = null) {
+            const modal = document.getElementById('contentModal');
+            const modalTitle = document.getElementById('modalTitle');
+            
+            if (action === 'add') {
+                modalTitle.textContent = 'Tambah Konten Edukasi';
+                document.getElementById('contentForm').reset();
+            } else if (action === 'edit') {
+                modalTitle.textContent = 'Edit Konten Edukasi';
+                // Load data untuk edit (implementasi sesuai kebutuhan)
+            }
+            
+            modal.style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('contentModal').style.display = 'none';
+        }
+
+        function saveContent(event) {
+            event.preventDefault();
+            
+            const title = document.getElementById('contentTitle').value;
+            const category = document.getElementById('contentCategory').value;
+            const priority = document.getElementById('contentPriority').value;
+            const status = document.getElementById('contentStatus').value;
+            
+            // Simulasi penyimpanan data
+            alert('Konten berhasil disimpan!');
+            closeModal();
+            
+            // Refresh table atau tambah row baru
+            location.reload(); // Dalam implementasi nyata, update table secara dinamis
+        }
+
+        function viewContent(id) {
+            alert(`Melihat konten ID: ${id}`);
+            // Implementasi untuk melihat detail konten
+        }
+
+        function editContent(id) {
+            openModal('edit', id);
+        }
+
+        function deleteContent(id) {
+            if (confirm('Apakah Anda yakin ingin menghapus konten ini?')) {
+                alert(`Konten ID ${id} berhasil dihapus!`);
+                // Implementasi penghapusan
+                location.reload();
+            }
+        }
+
+        function exportData() {
+            alert('Mengunduh data dalam format Excel...');
+            // Implementasi export data
+        }
+
+        function changePage(direction) {
+            const newPage = currentPage + direction;
+            if (newPage >= 1 && newPage <= totalPages) {
+                goToPage(newPage);
+            }
+        }
+
+        function goToPage(page) {
+            currentPage = page;
+            
+            // Update pagination buttons
+            const buttons = document.querySelectorAll('.pagination button');
+            buttons.forEach(button => button.classList.remove('active'));
+            
+            // Find and activate current page button
+            buttons.forEach(button => {
+                if (button.textContent.trim() === page.toString()) {
+                    button.classList.add('active');
+                }
+            });
+            
+            // Simulasi load data untuk halaman baru
+            console.log(`Loading page ${page}`);
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('contentModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Data Edukasi SP-PAROK loaded successfully');
+        });
+    </script>
+</body>
+</html>
